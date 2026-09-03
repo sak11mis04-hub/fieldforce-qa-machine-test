@@ -1,0 +1,214 @@
+{
+  "info": {
+    "_postman_id": "a2d4f207-d351-4b01-b3ce-5ab8a372602c",
+    "name": "My Collection",
+    "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57942592",
+    "_collection_link": "https://go.postman.co/collection/57942592-a2d4f207-d351-4b01-b3ce-5ab8a372602c?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Get data",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "postman-echo.com/get",
+          "host": [
+            "postman-echo",
+            "com"
+          ],
+          "path": [
+            "get"
+          ]
+        },
+        "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+      },
+      "response": []
+    },
+    {
+      "name": "Post data",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Login successful\", function () {\n    const json = pm.response.json();\n    pm.expect(json.success).to.eql(true);\n    pm.environment.set(\"token\", json.referralToken);\n});\n\npm.test(\"User ID present\", function () {\n    const json = pm.response.json();\n    pm.expect(json.userId).to.eql(1870);\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/account/authenticate",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "account",
+            "authenticate"
+          ]
+        },
+        "description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+      },
+      "response": []
+    },
+    {
+      "name": "Login - Invalid",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Response received\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Login should fail for wrong password\", function () {\n    const json = pm.response.json();\n    pm.expect(json.success).to.eql(false);\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"WrongPassword123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/account/authenticate",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "account",
+            "authenticate"
+          ]
+        },
+        "description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+      },
+      "response": []
+    },
+    {
+      "name": "Valid Credentials",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"username\": \"{{username}}\",\r\n  \"password\": \"{{password}}\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/account/authenticate",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "account",
+            "authenticate"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add Customer",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response body is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\npm.test(\"Response contains expected fields\", function () {\n    const jsonData = pm.response.json();\n    pm.expect(jsonData).to.have.property(\"Status\");\n    pm.expect(jsonData).to.have.property(\"Message\");\n    pm.expect(jsonData).to.have.property(\"data\");\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "username",
+              "value": "{{username}}",
+              "type": "string"
+            },
+            {
+              "key": "password",
+              "value": "{{password}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"LeadId\": 0,\r\n  \"IsVisibleToAll\": false,\r\n  \"LeadName\": \"Sakshi Mishra\",\r\n  \"RefNo\": \"\",\r\n  \"ReferredBy\": 0,\r\n  \"PersonName\": \"\",\r\n  \"Address\": \"\",\r\n  \"BackView\": \"\",\r\n  \"CityId\": 0,\r\n  \"ContactNo\": \"\",\r\n  \"CountryId\": 0,\r\n  \"CustomFieldValues\": [],\r\n  \"Email\": \"test12345@gmail.com\",\r\n  \"FrontView\": \"\",\r\n  \"Latitude\": 0,\r\n  \"LeadContacts\": [],\r\n  \"LeadSourceId\": 0,\r\n  \"LeadStageId\": 0,\r\n  \"LeadTags\": [],\r\n  \"LeadTypeId\": 0,\r\n  \"LocalityId\": 0,\r\n  \"Longitude\": 0,\r\n  \"MobileNo\": \"+91 6479367345\",\r\n  \"OtherInfo\": \"\",\r\n  \"ParentLeadId\": 0,\r\n  \"PersonDesignation\": \"\",\r\n  \"PersonLocation\": \"\",\r\n  \"PinCode\": \"\",\r\n  \"StateId\": 0,\r\n  \"TerritoryId\": 0,\r\n  \"Website\": \"\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://test.fieldforceconnect.com/api/CRM/Lead",
+          "protocol": "https",
+          "host": [
+            "test",
+            "fieldforceconnect",
+            "com"
+          ],
+          "path": [
+            "api",
+            "CRM",
+            "Lead"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
